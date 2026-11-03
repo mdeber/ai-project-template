@@ -1,0 +1,12 @@
+# Every data location. Code reads these through PROJECT_ROOT; nothing hardcodes a path.
+# Entries are relative to root. On the laptop, root is under /Volumes instead of /jukebox.
+root: __REPO_ROOT__
+
+# data directories — one key per entry in docs/data.md
+fastq:        data/fastq
+cellranger:   data/cellranger
+derived:      data/derived
+
+# metadata
+animals:      metadata/animals.tsv
+libraries:    metadata/libraries.tsv

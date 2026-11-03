@@ -1,0 +1,28 @@
+# data and throwaway
+data/*
+!data/.gitkeep
+scratch/*
+!scratch/.gitkeep
+# analysis outputs, except small derived tables and final figure panels
+code/analysis/**/out/*
+!code/analysis/**/out/tables/
+!code/analysis/**/out/final/
+# large binary formats, wherever they appear
+*.h5ad
+*.h5
+*.rds
+*.RData
+*.loom
+*.mtx
+*.mtx.gz
+*.bam
+*.fastq
+*.fastq.gz
+*.npz
+# editor and runtime noise
+.Rhistory
+.Rproj.user/
+.ipynb_checkpoints/
+__pycache__/
+slurm-*.out
+*.log
