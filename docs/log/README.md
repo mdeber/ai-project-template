@@ -6,7 +6,7 @@ File name: `YYMMDD_HHMM_<topic>.md` — e.g. `261103_1420_integrate_batch2.md`
 
 ```markdown
 # 261103 14:20 — integrate batch 261029 with existing object
-stage: A2 integration · data: thru_261029 · agent: Claude Code (<model>) · human: Mike
+stage: A2 integration · data: thru_261029 · agent: Claude Code (<model>) · mode: interactive | unattended · human: Mike
 
 ## Did
 ## Observed

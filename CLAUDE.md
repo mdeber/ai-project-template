@@ -40,6 +40,16 @@ Every path comes from config/. Scripts + exported files, not notebooks.
 **Consolidate** means: read every log entry since `last consolidated` in STATUS.md, bring the living
 docs (background, data, plan, results) up to date, then set `last consolidated` to now.
 
+## Extended autonomy (only when Mike asks for it)
+Mike, or a session he instructs, starts `~/.claude/bin/claude-loop.sh "<goal>"` from the repo root,
+detached in tmux as `cc-loop-<project>`. Each iteration is a fresh headless session: it reads
+STATUS.md and the active plan stage, works, submits Slurm jobs, and ends by running the end-of-session
+protocol above (log entry with `mode: unattended`, STATUS, commit) and writing ONE line to
+`scratch/loop/state`: `WAITING <jobid...>` (re-enter when they finish), `CONTINUE` (more to do now),
+`DONE` (goal reached), or `NEEDS_MIKE <why>` (stop). The driver waits for the jobs and re-enters.
+Plan decision points are `NEEDS_MIKE` stops unless the goal names which decisions Claude may take.
+Transcripts: `scratch/loop/iter_<n>.log`; driver log: `scratch/loop/driver.log`.
+
 ## Rules
 - If it matters, it is in docs/. Nothing important lives only in this session or in Claude memory.
 - Living docs hold current state only. Narrative, history, and reasoning go in log/.
@@ -49,7 +59,6 @@ docs (background, data, plan, results) up to date, then set `last consolidated` 
   no abstraction beyond what this project needs.
 - Log files are timestamped. Analyses are not dated by folder name; the date is in the README header.
   In batch-driven projects, analysis outputs go in `thru_<batch>/` subfolders (see code/README.md).
-- When an approach fails twice, stop and report. Do not escalate resources to brute-force it.
 
 ## Project-specific deviations
 (none yet)
