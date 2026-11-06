@@ -3,6 +3,7 @@ One file per session that did anything worth remembering. This is the only place
 history, and verbose reasoning belong. Everything in the living docs is derived from here.
 
 File name: `YYMMDD_HHMM_<topic>.md` — e.g. `261103_1420_integrate_batch2.md`
+Timestamps (file name and title line) come from `date +%y%m%d_%H%M`, never typed from memory.
 
 ```markdown
 # 261103 14:20 — integrate batch 261029 with existing object
