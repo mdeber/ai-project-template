@@ -48,6 +48,8 @@ protocol above (log entry with `mode: unattended`, STATUS, commit) and writing O
 `scratch/loop/state`: `WAITING <jobid...>` (re-enter when they finish), `CONTINUE` (more to do now),
 `DONE` (goal reached), or `NEEDS_MIKE <why>` (stop). The driver waits for the jobs and re-enters.
 Plan decision points are `NEEDS_MIKE` stops unless the goal names which decisions Claude may take.
+After a wait, judge each job by its `<jobid>.exit` marker and outputs (code/README.md), not by sacct.
+A permission denial is a stop: never route around it; log it and `NEEDS_MIKE` if it blocks the goal.
 Transcripts: `scratch/loop/iter_<n>.log`; driver log: `scratch/loop/driver.log`.
 
 ## Rules

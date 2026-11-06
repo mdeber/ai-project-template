@@ -37,6 +37,13 @@ environment via config/hpc.sh. Submit from the repo root after sourcing it:
 source config/hpc.sh && sbatch code/pipeline/01_<step>/run.sbatch
 ```
 Inside run.sbatch, `source "$PROJECT_ROOT/config/hpc.sh"` — sbatch passes the environment through.
+Every run.sbatch records its own exit status, because sacct is often unreachable from scotty and
+scontrol forgets finished jobs within minutes. First lines after the #SBATCH block:
+```bash
+set -euo pipefail
+trap 'echo $? > "$PROJECT_ROOT/code/pipeline/<step>/out/${SLURM_JOB_ID}.exit"' EXIT
+```
+A job is judged by that marker (0 = success) and its outputs, never by accounting.
 
 ## code/analysis/
 One folder per analysis, named for what it is, not when: `qc_summary/`, `cluster_markers/`.
