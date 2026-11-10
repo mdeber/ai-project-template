@@ -50,7 +50,7 @@ protocol above (log entry with `mode: unattended`, STATUS, commit) and writing O
 Plan decision points are `NEEDS_MIKE` stops unless the goal names which decisions Claude may take.
 After a wait, judge each job by its `<jobid>.exit` marker and outputs (code/README.md), not by sacct.
 A permission denial is a stop: never route around it; log it and `NEEDS_MIKE` if it blocks the goal.
-Transcripts: `scratch/loop/iter_<n>.log`; driver log: `scratch/loop/driver.log`.
+Full transcripts: `scratch/loop/iter_<n>.jsonl` (final reports in `iter_<n>.log`); driver log: `scratch/loop/driver.log`.
 
 ## Rules
 - If it matters, it is in docs/. Nothing important lives only in this session or in Claude memory.

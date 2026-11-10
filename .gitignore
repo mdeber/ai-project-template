@@ -5,6 +5,7 @@ scratch/*
 !scratch/.gitkeep
 # analysis outputs, except small derived tables and final figure panels
 code/analysis/**/out/*
+code/pipeline/**/out/*
 !code/analysis/**/out/tables/
 !code/analysis/**/out/final/
 # large binary formats, wherever they appear

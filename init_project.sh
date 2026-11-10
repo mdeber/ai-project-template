@@ -13,6 +13,6 @@ NOW_D=$(date +%y%m%d); NOW_T=$(date +%H%M)
 grep -rl '__' "$DEST" --include='*.md' --include='*.yaml' | xargs sed -i \
   -e "s|__PROJECT__|$NAME|g" -e "s|__LAB__|$LAB|g" -e "s|__REPO_ROOT__|$DEST|g" \
   -e "s|__ONE_LINE_DESCRIPTION__|$DESC|g" -e "s|__YYMMDD__|$NOW_D|g" -e "s|__HHMM__|$NOW_T|g"
-cd "$DEST" && git init -q && git add -A && git commit -qm "setup: initialize from pni-project-template"
+cd "$DEST" && git init -q && git add -A && git commit -qm "setup: initialize from project-template"
 echo "initialized $DEST"
 echo "next: open a Claude Code session there and run the project kickoff"
