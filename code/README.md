@@ -14,7 +14,7 @@ configuration systems, no generalization beyond this project. Scripts + exported
 # env     : $ENV_PY                                               (config/hpc.sh)
 # run     : source config/hpc.sh && sbatch code/pipeline/02_cellbender/run.sbatch <library>
 # runtime : ~40 min per library on 1 GPU
-# written : 261103   by: Claude Code / Mike
+# written : 261103   by: Claude Code / <name>
 # ------------------------------------------------------------------
 ```
 Read every path from config. Loaders:

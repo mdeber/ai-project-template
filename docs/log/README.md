@@ -7,7 +7,7 @@ Timestamps (file name and title line) come from `date +%y%m%d_%H%M`, never typed
 
 ```markdown
 # 261103 14:20 — integrate batch 261029 with existing object
-stage: A2 integration · data: thru_261029 · agent: Claude Code (<model>) · mode: interactive | unattended · human: Mike
+stage: A2 integration · data: thru_261029 · agent: Claude Code (<model>) · mode: interactive | unattended · human: <name>
 
 ## Did
 ## Observed

@@ -40,16 +40,16 @@ Every path comes from config/. Scripts + exported files, not notebooks.
 **Consolidate** means: read every log entry since `last consolidated` in STATUS.md, bring the living
 docs (background, data, plan, results) up to date, then set `last consolidated` to now.
 
-## Extended autonomy (only when Mike asks for it)
-Mike, or a session he instructs, starts `~/.claude/bin/claude-loop.sh "<goal>"` from the repo root,
+## Extended autonomy (only when the user asks for it)
+The user, or a session they instruct, starts `~/.claude/bin/claude-loop.sh "<goal>"` from the repo root,
 detached in tmux as `cc-loop-<project>`. Each iteration is a fresh headless session: it reads
 STATUS.md and the active plan stage, works, submits Slurm jobs, and ends by running the end-of-session
 protocol above (log entry with `mode: unattended`, STATUS, commit) and writing ONE line to
 `scratch/loop/state`: `WAITING <jobid...>` (re-enter when they finish), `CONTINUE` (more to do now),
-`DONE` (goal reached), or `NEEDS_MIKE <why>` (stop). The driver waits for the jobs and re-enters.
-Plan decision points are `NEEDS_MIKE` stops unless the goal names which decisions Claude may take.
+`DONE` (goal reached), or `NEEDS_USER <why>` (stop). The driver waits for the jobs and re-enters.
+Plan decision points are `NEEDS_USER` stops unless the goal names which decisions Claude may take.
 After a wait, judge each job by its `<jobid>.exit` marker and outputs (code/README.md), not by sacct.
-A permission denial is a stop: never route around it; log it and `NEEDS_MIKE` if it blocks the goal.
+A permission denial is a stop: never route around it; log it and `NEEDS_USER` if it blocks the goal.
 Full transcripts: `scratch/loop/iter_<n>.jsonl` (final reports in `iter_<n>.log`); driver log: `scratch/loop/driver.log`.
 
 ## Rules
