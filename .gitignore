@@ -3,11 +3,11 @@ data/*
 !data/.gitkeep
 scratch/*
 !scratch/.gitkeep
-# analysis outputs, except small derived tables and final figure panels
-code/analysis/**/out/*
+# analysis outputs: tables/, plots/ and reports/ are committed (keep files < 5 MB);
+# large intermediates and job logs are not, at any depth (also under out/thru_<batch>/)
+code/analysis/**/out/**/objects/
+code/analysis/**/out/**/jobs/
 code/pipeline/**/out/*
-!code/analysis/**/out/tables/
-!code/analysis/**/out/final/
 # large binary formats, wherever they appear
 *.h5ad
 *.h5
@@ -27,3 +27,5 @@ code/pipeline/**/out/*
 __pycache__/
 slurm-*.out
 *.log
+# per-person Claude Code settings
+.claude/settings.local.json

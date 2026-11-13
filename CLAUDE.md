@@ -18,7 +18,11 @@ and are not repeated here.
   - `research/`      raw research notes (paper reads, software evaluations), distilled into background.md
 - `config/paths.yaml`, `config/hpc.sh` — every path and cluster setting. Code never hardcodes these.
 - `code/pipeline/`  numbered steps, applied identically to every batch
-- `code/analysis/`  one folder per analysis: README.md + scripts + out/
+- `code/analysis/`  one folder per analysis, each a project in miniature: README.md (its living doc)
+                    + log/ + numbered scripts + out/{tables,plots,reports,objects,jobs}. Details and
+                    the plot + legend contract are in code/README.md.
+- `code/check_conventions.sh`  checks the analysis layout; runs automatically when an analyst or
+                    manager subagent stops (.claude/settings.json)
 - `metadata/`       small committed tables (animals, libraries, …); columns documented in docs/data.md
 - `data/`           large files, gitignored; every subdirectory is described in docs/data.md
 - `envs/`           exported environment yamls
@@ -30,12 +34,19 @@ if you touch results. Do not read log/ unless asked why something was done, or y
 
 **Work.** Exploration that might matter goes in code/analysis/<name>/. Throwaway goes in scratch/.
 Every path comes from config/. Scripts + exported files, not notebooks.
+You are the project manager (~/.claude/CLAUDE.md). Delegate to `analyst`, `auditor` and
+`manager` subagents (~/.claude/agents/). Save each brief in the analysis's log/briefs/ (project-wide
+work: docs/log/briefs/). Every analyst result headed for docs/ gets an auditor run first.
 
 **End of session, or on "consolidate" — in this order:**
-1. Write `docs/log/YYMMDD_HHMM_<topic>.md` (format in docs/log/README.md). Tag DECISION and DEAD END.
-2. Overwrite `docs/STATUS.md`.
-3. Add any new output to `docs/results.md`. The full interpretation goes in the analysis README.
-4. `git add` and commit. Message: `<stage>: <what changed>`. Never commit data or files > 5 MB.
+1. Every analysis touched has its own log entry and a current README; results headed for
+   results.md have an audit entry. Run `code/check_conventions.sh --changed`.
+2. Write `docs/log/YYMMDD_HHMM_<topic>.md` (format in docs/log/README.md). Tag DECISION and DEAD END.
+   It records the project-level work: what was delegated (role, model, effort, brief), audit
+   verdicts, decisions. It links to the analysis log entries rather than repeating them.
+3. Overwrite `docs/STATUS.md`.
+4. Add any new audited result to `docs/results.md`. The full interpretation goes in the analysis README.
+5. `git add` and commit. Message: `<stage>: <what changed>`. Never commit data or files > 5 MB.
 
 **Consolidate** means: read every log entry since `last consolidated` in STATUS.md, bring the living
 docs (background, data, plan, results) up to date, then set `last consolidated` to now.

@@ -47,15 +47,68 @@ A job is judged by that marker (0 = success) and its outputs, never by accountin
 
 ## code/analysis/
 One folder per analysis, named for what it is, not when: `qc_summary/`, `cluster_markers/`.
+Each analysis is a project in miniature, with the same practices at a smaller size:
 ```
 code/analysis/<name>/
-├── README.md     purpose · date written · inputs · what was done · what it showed · caveats
-├── <scripts>
-└── out/          gitignored, except out/tables/ (small derived tables) and out/final/ (figure panels)
+├── README.md     the analysis's living doc (sections below), current state only
+├── log/          YYMMDD_HHMM_<topic>.md entries, same format as docs/log/README.md
+│   ├── briefs/   the brief behind every subagent spawned for this analysis
+│   └── *_audit_<topic>.md   auditor entries
+├── NN_<step>.*   scripts, numbered in run order, each with the header contract
+└── out/
+    ├── tables/   derived tables (committed when < 5 MB; larger ones go to data/derived/)
+    ├── plots/    x.pdf + x.png + x.txt legend for every plot (committed when small)
+    ├── reports/  rendered summaries, html or pdf (committed when small)
+    ├── objects/  large intermediates: rds, h5ad, npz … (gitignored)
+    └── jobs/     Slurm stdout/err and <jobid>.exit markers (gitignored)
 ```
-Batch-driven projects: outputs for a given data state go in `out/thru_<batch>/`, meaning all
-batches up to and including that one. When a new batch lands, add `thru_<newbatch>/` and rerun.
-Raw-data directories named for a single batch contain only that batch.
+Nothing sits loose in out/, and temporary files go in `scratch/<analysis>/`, never in out/.
+Batch-driven projects nest by data state: `out/thru_<batch>/{tables,plots,…}`, where `thru_<batch>`
+means all batches up to and including that one. When a new batch lands, add `thru_<newbatch>/` and
+rerun. Raw-data directories named for a single batch contain only that batch.
 
-Derived tables other code depends on are committed in out/tables/ if small (< 5 MB); larger ones
-go to data/derived/ and are registered in docs/data.md.
+README sections, in this order:
+- a header line: `date: YYMMDD · stage: <plan stage> · owner: <who>`
+- `## Question`
+- `## Inputs` (what was checked about them)
+- `## Method`
+- `## Planned outputs` (tables and plots)
+- `## Reading the result` (what outcome A vs B would mean, written before seeing either)
+- `## Status`
+- `## Results`
+- `## Caveats`
+
+Detail stays in the analysis; it rolls up into the project as one docs/results.md line per result,
+plus a docs/log/ entry only when it changes the plan. Every agent that works in the analysis writes
+its own log entry here: the project manager, managers, analysts and auditors. Results headed for
+docs/ need an auditor entry first.
+
+`code/check_conventions.sh <analysis dir>` (or `--changed`) checks this layout. It also runs
+automatically when an `analyst` or `manager` subagent stops (.claude/settings.json), and blocks
+the stop until the violations are fixed.
+
+## Plots
+Plots are outputs like tables, and most analyses should plan them in the README. Every plot is
+saved as `x.pdf` + `x.png` + `x.txt`. The PNG is for quick viewing, by people and by agents. The
+legend is written by the same code that draws the plot, from computed values: what is plotted, n,
+the statistic or test, the inputs, the script and the date. It is never typed by hand, so it can't
+drift from the plot. Copy a helper into the project:
+```python
+import os
+def save_plot(fig, name, legend, outdir):
+    """fig: matplotlib figure; legend: text assembled from computed values."""
+    os.makedirs(outdir, exist_ok=True)
+    fig.savefig(os.path.join(outdir, f"{name}.pdf"))
+    fig.savefig(os.path.join(outdir, f"{name}.png"), dpi=150)
+    with open(os.path.join(outdir, f"{name}.txt"), "w") as fh:
+        fh.write(legend.strip() + "\n")
+```
+```r
+save_plot <- function(p, name, legend, outdir, width = 7, height = 5) {
+  # p: ggplot; legend: text assembled from computed values (sprintf / glue)
+  dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
+  ggplot2::ggsave(file.path(outdir, paste0(name, ".pdf")), p, width = width, height = height)
+  ggplot2::ggsave(file.path(outdir, paste0(name, ".png")), p, width = width, height = height, dpi = 150)
+  writeLines(trimws(legend), file.path(outdir, paste0(name, ".txt")))
+}
+```

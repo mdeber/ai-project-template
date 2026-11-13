@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SubagentStop": [
+      {
+        "matcher": "analyst|manager",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/code/check_conventions.sh --hook",
+            "timeout": 60,
+            "statusMessage": "checking analysis conventions"
+          }
+        ]
+      }
+    ]
+  }
+}
